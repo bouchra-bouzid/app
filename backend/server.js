@@ -36,3 +36,7 @@ connectDB()
 
 
   
+  // Route racine pour test
+app.get("/", (req, res) => {
+  res.send("Bienvenue sur le backend RDV Medical !");
+});
