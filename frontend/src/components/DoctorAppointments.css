@@ -39,3 +39,51 @@
   letter-spacing: 0.3px;
   color: #fff; /* ✅ texte blanc pour tous */
 }
+
+/* Tablettes */
+@media (max-width: 992px) {
+  .react-calendar {
+    max-width: 320px;
+  }
+
+  .btn-confirm, .btn-cancel, .btn-complete {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}
+
+/* Mobiles */
+@media (max-width: 768px) {
+  .react-calendar {
+    max-width: 100%;
+    width: 100%;
+    margin: 10px auto;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  }
+
+  .react-calendar__tile {
+    padding: 6px !important;
+    font-size: 13px !important;
+  }
+
+  .btn-confirm, .btn-cancel, .btn-complete {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .status-badge {
+    display: block;
+    text-align: center;
+    margin: 5px 0;
+    font-size: 12px;
+  }
+}
+
+/* Très petits écrans (smartphones compacts) */

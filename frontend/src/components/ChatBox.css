@@ -151,3 +151,153 @@
   }
 }
 
+
+/* =========================
+   RESPONSIVE POUR CHATBOX
+   ========================= */
+
+/* Tablettes / petits laptops */
+@media (max-width: 992px) {
+  .chatbox-container {
+    right: 20px;
+    width: 360px;
+    max-height: 60vh;
+  }
+
+  .chatbox-messages {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .message-bubble {
+    max-width: 72%;
+    font-size: 13.5px;
+  }
+
+  .chatbox-input button {
+    padding: 6px 12px;
+  }
+}
+
+/* Petits écrans / mobiles */
+@media (max-width: 768px) {
+  .chatbox-container {
+    /* passe en largeur pleine et centré en bas */
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: calc(100% - 20px);
+    border-radius: 12px 12px 0 0;
+    max-height: 55vh;
+  }
+
+  /* header plus compact */
+  .chatbox-header {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .chatbox-messages {
+    padding: 10px;
+    gap: 8px;
+    max-height: calc(55vh - 120px); /* laisse de la place pour header + input */
+  }
+
+  .message-bubble {
+    max-width: 85%; /* bulles plus larges sur mobile */
+    font-size: 14px;
+    padding: 9px 12px;
+    border-radius: 10px;
+  }
+
+  .message-bubble.sent {
+    align-self: flex-end;
+  }
+
+  .message-bubble.received {
+    align-self: flex-start;
+  }
+
+  .chatbox-input {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .chatbox-input input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .chatbox-input button {
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Très petits écrans (ex: <420px) - pleine largeur et hauteur ajustée */
+@media (max-width: 420px) {
+  .chatbox-container {
+    left: 6px;
+    right: 6px;
+    max-width: calc(100% - 12px);
+    width: auto;
+    max-height: 65vh; /* légèrement plus grand si besoin */
+  }
+
+  .chatbox-header {
+    font-size: 13px;
+    padding: 9px 10px;
+  }
+
+  .chatbox-messages {
+    padding: 8px;
+    max-height: calc(65vh - 110px);
+  }
+
+  .message-bubble {
+    font-size: 13px;
+    padding: 8px 10px;
+    max-width: 90%;
+  }
+
+  .chatbox-input {
+    padding: 6px;
+  }
+
+  .chatbox-input input {
+    font-size: 13px;
+  }
+
+  .chatbox-input button {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  /* Empêche le transform translateY(100%) de mettre la boîte hors écran quand ouverte sur mobile */
+  .chatbox-container.open {
+    transform: translateY(0);
+  }
+}
+
+/* Option pratique : quand l'écran est trop petit, cacher la chatbox fixe et proposer un bouton flottant */
+@media (max-width: 420px) {
+  
+
+  /* tu peux ajouter un bouton flottant pour ouvrir la page de chat */
+  .chat-open-fab {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #ffcc4d;
+    color: #1e2a38;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+}

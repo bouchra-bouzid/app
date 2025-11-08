@@ -2,52 +2,53 @@ import { useEffect, useState, useRef } from "react";
 import API from "../services/api";
 import "./ChatBox.css";
 
-const ChatBox = ({ currentUser, receiver, isOpen, onClose }) => {
+const ChatBox = ({ currentUser, receiver, isOpen, onClose, onMessageSent = () => {} }) => {
   const [messages, setMessages] = useState([]);
   const [newMsg, setNewMsg] = useState("");
   const messagesEndRef = useRef(null);
 
   // Charger la conversation
   useEffect(() => {
-  if (!receiver) return;
+    if (!receiver) return;
 
-  const fetchMessages = async () => {
-    try {
-      const res = await API.get(`/messages/conversation/${currentUser._id}/${receiver._id}`);
-      setMessages(res.data); // toujours remplacer la liste pour rester synchro
-    } catch (err) {
-      console.error("Erreur fetch messages :", err);
-    }
-  };
+    const fetchMessages = async () => {
+      try {
+        const res = await API.get(`/messages/conversation/${currentUser._id}/${receiver._id}`);
+        setMessages(res.data); // remplacer la liste pour rester synchro
+      } catch (err) {
+        console.error("Erreur fetch messages :", err);
+      }
+    };
 
-  fetchMessages(); // fetch initial
-  const interval = setInterval(fetchMessages, 2000); // mise à jour continue toutes les 2s
+    fetchMessages(); // fetch initial
+    const interval = setInterval(fetchMessages, 2000); // mise à jour continue toutes les 2s
 
-  return () => clearInterval(interval);
-}, [currentUser, receiver]);
-
+    return () => clearInterval(interval);
+  }, [currentUser, receiver]);
 
   // Envoyer un message
   const sendMessage = async (e) => {
-  e.preventDefault();
-  if (!newMsg.trim()) return;
-  try {
-    const res = await API.post("/messages", {
-      senderId: currentUser._id,
-      senderName: currentUser.name,
-      receiverId: receiver._id,
-      text: newMsg,
-    });
-    setMessages((prev) => [...prev, res.data]);
-    setNewMsg("");
+    e.preventDefault();
+    if (!newMsg.trim() || !receiver?._id) return;
 
-    // ✅ avertit le parent d’ajouter le médecin si nouveau
-    if (onMessageSent) onMessageSent(receiver);
-  } catch (err) {
-    console.error("Erreur envoi :", err);
-  }
-};
+    try {
+      const res = await API.post("/messages", {
+        senderId: currentUser._id,
+        senderName: currentUser.name,
+        receiverId: receiver._id,
+        text: newMsg,
+      });
+      setMessages((prev) => [...prev, res.data]);
+      setNewMsg("");
 
+      // ✅ avertit le parent si nécessaire
+      if (typeof onMessageSent === "function") {
+        onMessageSent(receiver);
+      }
+    } catch (err) {
+      console.error("Erreur envoi :", err);
+    }
+  };
 
   // Scroll automatique
   useEffect(() => {

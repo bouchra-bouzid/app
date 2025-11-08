@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
-import "./CustomSlotForm.css"; // <-- importer le CSS
+import "./CustomSlotForm.css";
+import API from "../services/api"; // <-- ajout de l'import API
 
 const CustomSlotForm = ({ onCreated }) => {
   const [date, setDate] = useState("");
@@ -13,13 +13,16 @@ const CustomSlotForm = ({ onCreated }) => {
     try {
       const token = localStorage.getItem("token");
       const dateTime = `${date}T${time}`;
-      await axios.post(
-        "http://localhost:5000/api/appointments/slot",
+
+      await API.post(
+        "/appointments/slot",
         { date: dateTime },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
       alert("Créneau créé !");
-      setDate(""); setTime("");
+      setDate("");
+      setTime("");
       if (onCreated) onCreated();
     } catch (err) {
       alert(err.response?.data?.message || "Erreur serveur");

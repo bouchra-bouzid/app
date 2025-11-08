@@ -8,7 +8,7 @@ import AvailableSlots from "../components/AvailableSlots";
 import ChatBox from "../components/ChatBox";
 import CustomSlotForm from "../components/CustomSlotForm";
 
-import "./Dashboard.css";
+import "./DoctorDashboard.css";
 
 const DoctorDashboard = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -179,9 +179,11 @@ useEffect(() => {
 <div className="card chat-section">
   <h3>Messagerie</h3>
 
-  <div className="chat-sidebar">
-    {activePatients.length > 0 ? (
-      activePatients.map((patient) => (
+
+    <div className="chat-sidebar">
+  {activePatients.length > 0 ? (
+    activePatients.map((patient) => (
+      patient?._id && (
         <div
           key={patient._id}
           className={`chat-user-item ${
@@ -192,38 +194,47 @@ useEffect(() => {
             setIsChatOpen(true);
 
             // 🔹 Marquer les messages comme lus quand on ouvre la conversation
-            API.put(`/messages/mark-read/${user._id}/${patient._id}`)
-              .then(() => fetchActivePatients())
-              .catch((err) => console.error("Erreur lecture:", err));
+            if (user?._id && patient._id) {
+              API.put(`/messages/mark-read/${user._id}/${patient._id}`)
+                .then(() => fetchActivePatients())
+                .catch((err) => console.error("Erreur lecture:", err));
+            }
           }}
         >
           <div className="chat-user-avatar">
             <FaUserCircle size={28} />
           </div>
           <div className="chat-user-info">
-            <span className="chat-user-name">{patient.name}</span>
+            <span className="chat-user-name">{patient.name || "Patient"}</span>
             <span className="chat-user-status online"></span>
           </div>
-            {patient.unreadCount ? (
-  <span className="chat-unread-badge">{patient.unreadCount}</span>
-) : null}
-
-
-
+          {patient.unreadCount ? (
+            <span className="chat-unread-badge">{patient.unreadCount}</span>
+          ) : null}
         </div>
-      ))
-    ) : (
-      <p className="no-chat">Aucune discussion</p>
-    )}
-  </div>
+      )
+    ))
+  ) : (
+    <p className="no-chat">Aucune discussion</p>
+  )}
+</div>
+  
 
   {/* Fenêtre de chat */}
-  <ChatBox
-    currentUser={user}
-    receiver={selectedPatient}
-    isOpen={isChatOpen && !!selectedPatient}
-    onClose={() => setIsChatOpen(false)}
-  />
+  {/* ✅ Fenêtre de chat */}
+<ChatBox
+  currentUser={user}
+  receiver={selectedPatient}
+  isOpen={isChatOpen && !!selectedPatient}
+  onClose={() => setIsChatOpen(false)}
+  onMessageSent={(newPatient) => {
+    // 🔹 Si nouveau patient, on l’ajoute à la liste
+    if (newPatient && !activePatients.some((p) => p._id === newPatient._id)) {
+      setActivePatients((prev) => [...prev, newPatient]);
+    }
+  }}
+/>
+
 </div>
 
   

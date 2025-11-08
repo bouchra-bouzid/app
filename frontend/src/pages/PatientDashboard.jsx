@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import PatientAppointments from "../components/PatientAppointments";
 import AvailableSlots from "../components/AvailableSlots";
 import ChatBox from "../components/ChatBox";
-import "./Dashboard.css";
+import "./PatientDashboard.css";
 
 const PatientDashboard = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -123,23 +123,25 @@ const fetchActiveDoctors = async () => {
   <h3>Messagerie</h3>
 
   {/* ✅ Sélecteur pour choisir un nouveau médecin */}
-  <div className="chat-selector">
-    <select
-      value={selectedDoctor?._id || ""}
-      onChange={(e) => {
-        const doc = doctors.find((d) => d._id === e.target.value);
-        setSelectedDoctor(doc || null);
-        if (doc) setIsChatOpen(true);
-      }}
-    >
-      <option value="">-- Choisir un médecin --</option>
-      {doctors.map((d) => (
-        <option key={d._id} value={d._id}>
-          {d.name || "Médecin"}
-        </option>
-      ))}
-    </select>
-  </div>
+  <div className="doctor-selector-wrapper">
+  <select
+    className="doctor-selector"
+    value={selectedDoctor?._id || ""}
+    onChange={(e) => {
+      const doc = activeDoctors.find(d => d._id === e.target.value);
+      setSelectedDoctor(doc);
+      setIsChatOpen(true);
+    }}
+  >
+    <option value="">Sélectionnez un médecin</option>
+    {activeDoctors.map((doctor) => (
+      <option key={doctor._id} value={doctor._id}>
+        {doctor.name}
+      </option>
+    ))}
+  </select>
+</div>
+
 
   <div className="chat-body">
     {/* ✅ Liste des médecins avec messages échangés */}

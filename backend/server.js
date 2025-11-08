@@ -9,7 +9,8 @@ dotenv.config();
 const app = express();
 
 // ✅ Middleware
-app.use(cors());
+app.use(cors({}));
+origin: "https://68fb59b96357ec008f6060a2--luxury-souffle-0153cb.netlify.app/"
 app.use(express.json());
 
 // ✅ Routes

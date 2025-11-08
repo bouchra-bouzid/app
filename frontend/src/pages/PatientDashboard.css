@@ -1,0 +1,213 @@
+/* 🌐 Conteneur principal */
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+  padding: 25px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🧱 Section principale */
+.main-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 👤 Carte profil */
+.profile-card {
+  flex: 0 0 320px;
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.profile-card h3 {
+  color: #1a73e8;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.profile-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* 🗂️ Cartes générales */
+.card {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  color: #1a73e8;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* CHAT SECTION identique à DoctorDashboard */
+.chat-section {
+  background-color: #1e1e2f;
+  color: #e0e0e0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.chat-section h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* Liste des patients / discussions */
+.chat-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.chat-user-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2c2c3e;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.chat-user-item:hover {
+  background: #3a3a50;
+}
+
+.chat-user-item.active {
+  background: #4b4c4d;
+  color: #fff;
+}
+
+.chat-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-user-info {
+  flex: 1;
+}
+
+.chat-user-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.chat-user-status {
+  width: 8px;
+  height: 8px;
+  background: #28a745;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.chat-unread-badge {
+  background-color: #f4cf4a;
+  color: #030303;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+/* Fenêtre de chat */
+.chat-box {
+  background: #2a2a3b;
+  border-radius: 12px;
+  padding: 15px;
+  color: #eaeaea;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===============================
+   SELECTEUR DES MÉDECINS
+   =============================== */
+.doctor-selector {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
+  font-size: 14px;
+  color: #111827;
+  transition: all 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.doctor-selector:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Option à l'intérieur du select */
+.doctor-selector option {
+  padding: 8px;
+  background-color: #fff;
+  color: #111827;
+}
+
+
+/* 🧠 Responsive */
+@media (max-width: 992px) {
+  .dashboard-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-card {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .chat-body {
+    flex-direction: column;
+  }
+
+  .chat-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .chat-user-item {
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .card, .profile-card {
+    padding: 15px;
+  }
+}
