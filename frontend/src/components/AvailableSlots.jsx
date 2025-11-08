@@ -86,7 +86,10 @@ const AvailableSlots = ({ doctorId, forPatient = false, onBooked }) => {
         <ul>
           {slots.map((slot) => (
             <li key={slot._id}>
-  <span>{new Date(slot.date).toLocaleString()}</span>
+<span>
+  {new Date(new Date(slot.date).getTime() - 60 * 60 * 1000).toLocaleString()}
+</span>
+
 
   {/* Bouton réserver pour les patients */}
   {forPatient && slot.status === "available" && (
