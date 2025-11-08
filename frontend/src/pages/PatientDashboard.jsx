@@ -125,21 +125,22 @@ const fetchActiveDoctors = async () => {
   {/* ✅ Sélecteur pour choisir un nouveau médecin */}
   <div className="doctor-selector-wrapper">
   <select
-    className="doctor-selector"
-    value={selectedDoctor?._id || ""}
-    onChange={(e) => {
-      const doc = activeDoctors.find(d => d._id === e.target.value);
-      setSelectedDoctor(doc);
-      setIsChatOpen(true);
-    }}
-  >
-    <option value="">Sélectionnez un médecin</option>
-    {activeDoctors.map((doctor) => (
-      <option key={doctor._id} value={doctor._id}>
-        {doctor.name}
-      </option>
-    ))}
-  </select>
+  className="doctor-selector"
+  value={selectedDoctor?._id || ""}
+  onChange={(e) => {
+    const doc = doctors.find(d => d._id === e.target.value);
+    setSelectedDoctor(doc);
+    setIsChatOpen(true);
+  }}
+>
+  <option value="">Sélectionnez un médecin</option>
+  {doctors.map((doctor) => (
+    <option key={doctor._id} value={doctor._id}>
+      {doctor.name}
+    </option>
+  ))}
+</select>
+
 </div>
 
 
