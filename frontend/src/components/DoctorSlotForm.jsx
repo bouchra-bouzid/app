@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import API from "../services/api"; // ⚡ Utiliser ton API centralisé
 import "./DoctorSlotForm.css";
 
 const daysOfWeek = [
@@ -44,11 +44,12 @@ const DoctorSlotForm = ({ onCreated }) => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post(
-        "http://localhost:5000/api/appointments/slot/recurring",
+      await API.post(
+        "/appointments/slot/recurring",
         { startDate, endDate, timeRanges, recurrence: selectedDays, slotDuration },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
       alert("Créneaux créés !");
       setSelectedDays([]);
       setTimeRanges([{ start: "", end: "" }]);
@@ -57,6 +58,7 @@ const DoctorSlotForm = ({ onCreated }) => {
       setEndDate("");
       if (onCreated) onCreated();
     } catch (err) {
+      console.error("Erreur création créneaux:", err);
       alert(err.response?.data?.message || "Erreur serveur");
     }
   };
@@ -65,22 +67,21 @@ const DoctorSlotForm = ({ onCreated }) => {
     <form className="doctor-slot-form" onSubmit={handleSubmit}>
       <label>Jours de la semaine :</label>
       <div className="days-selector">
-  {daysOfWeek.map(day => (
-    <label 
-      key={day.value} 
-      className={`day-checkbox ${selectedDays.includes(day.value) ? 'active' : ''}`}
-    >
-      <input
-        type="checkbox"
-        value={day.value}
-        checked={selectedDays.includes(day.value)}
-        onChange={() => toggleDay(day.value)}
-      />
-      {day.label[0]} {/* on met juste la première lettre du jour */}
-    </label>
-  ))}
-</div>
-
+        {daysOfWeek.map(day => (
+          <label
+            key={day.value}
+            className={`day-checkbox ${selectedDays.includes(day.value) ? 'active' : ''}`}
+          >
+            <input
+              type="checkbox"
+              value={day.value}
+              checked={selectedDays.includes(day.value)}
+              onChange={() => toggleDay(day.value)}
+            />
+            {day.label[0]} {/* première lettre du jour */}
+          </label>
+        ))}
+      </div>
 
       <label>Date de début :</label>
       <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required />
@@ -99,32 +100,31 @@ const DoctorSlotForm = ({ onCreated }) => {
       />
 
       <label>Plages horaires :</label>
-<div className="time-range-container">
-  {timeRanges.map((range, index) => (
-    <div key={index} className="time-range">
-    
-      <input
-        type="time"
-        value={range.start}
-        onChange={e => handleTimeChange(index, "start", e.target.value)}
-        required
-      />
-      <span>à</span>
-      <input
-        type="time"
-        value={range.end}
-        onChange={e => handleTimeChange(index, "end", e.target.value)}
-        required
-      />
-      {index === 0 && (
-        <button type="button" className="add-range-btn" onClick={addTimeRange} title="Ajouter une plage">+</button>
-      )}
-      {index > 0 && (
-        <button type="button" className="remove-range-btn" onClick={() => removeTimeRange(index)}>×</button>
-      )}
-    </div>
-  ))}
-</div>
+      <div className="time-range-container">
+        {timeRanges.map((range, index) => (
+          <div key={index} className="time-range">
+            <input
+              type="time"
+              value={range.start}
+              onChange={e => handleTimeChange(index, "start", e.target.value)}
+              required
+            />
+            <span>à</span>
+            <input
+              type="time"
+              value={range.end}
+              onChange={e => handleTimeChange(index, "end", e.target.value)}
+              required
+            />
+            {index === 0 && (
+              <button type="button" className="add-range-btn" onClick={addTimeRange} title="Ajouter une plage">+</button>
+            )}
+            {index > 0 && (
+              <button type="button" className="remove-range-btn" onClick={() => removeTimeRange(index)}>×</button>
+            )}
+          </div>
+        ))}
+      </div>
 
       <button type="submit" className="submit-slot-btn">Créer les créneaux</button>
     </form>
